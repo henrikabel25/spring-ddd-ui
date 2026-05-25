@@ -1,62 +1,50 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createPinia, setActivePinia } from 'pinia';
 
-// Mock the API module
-vi.mock('#/api/sys/user', () => ({
-  getRecyclePage: vi.fn().mockResolvedValue({
-    code: 0,
-    data: {
-      list: [
-        {
-          id: '1',
-          username: 'deleted_user',
-          phone: '13800138000',
-          avatar: '',
-          email: 'deleted@example.com',
-          sex: true,
-          lockStatus: false,
-        },
-      ],
-      total: 1,
-    },
+vi.mock('@vben/access', () => ({
+  useAccess: vi.fn().mockReturnValue({
+    hasAccessByCodes: vi.fn().mockReturnValue(true),
   }),
-  restoreUser: vi.fn().mockResolvedValue({ code: 0 }),
-  wipeUserById: vi.fn().mockResolvedValue({ code: 0 }),
 }));
 
-describe('SysUser Recycle View', () => {
-  it('has correct recycle grid columns', () => {
-    const columns = [
-      { field: 'username', title: 'system.user.username' },
-      { field: 'phone', title: 'system.user.phone' },
-      { field: 'avatar', title: 'system.user.avatar' },
-      { field: 'email', title: 'system.user.email' },
-      { field: 'sex', title: 'system.user.sex' },
-      { field: 'lockStatus', title: 'system.user.lockStatus' },
-      { field: 'action', title: 'system.common.operation' },
-    ];
+vi.mock('@vben/common-ui', () => ({
+  confirm: vi.fn().mockResolvedValue(true),
+  useVbenModal: vi.fn().mockReturnValue([{}, {}]),
+}));
 
-    expect(columns).toHaveLength(7);
-    expect(columns.map((c) => c.field)).toContain('username');
+vi.mock('@vben/locales', () => ({
+  $t: vi.fn((key: string) => key),
+}));
+
+vi.mock('element-plus', () => ({
+  ElButton: { name: 'ElButton', template: '<button><slot /></button>' },
+  ElMessage: { success: vi.fn(), error: vi.fn(), warning: vi.fn() },
+}));
+
+vi.mock('#/adapter/component/Dict.vue', () => ({
+  default: { name: 'Dict', template: '<span>{{ value }}</span>', props: ['value'] },
+}));
+
+vi.mock('#/adapter/vxe-table', () => ({
+  useVbenVxeGrid: vi.fn().mockReturnValue([
+    vi.fn().mockReturnValue({}),
+    { gridOptions: {} },
+  ]),
+}));
+
+vi.mock('#/api/sys/user', () => ({
+  getRecyclePage: vi.fn().mockResolvedValue({ list: [], total: 0 }),
+  restoreUser: vi.fn().mockResolvedValue({}),
+  wipeUserById: vi.fn().mockResolvedValue({}),
+}));
+
+describe('UserRecycle', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
   });
 
-  it('provides restore and wipe actions', () => {
-    const actions = ['restore', 'wipe'];
-    expect(actions).toContain('restore');
-    expect(actions).toContain('wipe');
-  });
-
-  it('handles deleted user data structure', () => {
-    const deletedUser = {
-      id: '1',
-      username: 'deleted_user',
-      phone: '13800138000',
-      avatar: '',
-      email: 'deleted@example.com',
-      sex: true,
-      lockStatus: false,
-    };
-
-    expect(deletedUser.username).toBe('deleted_user');
-    expect(deletedUser.id).toBe('1');
-  });
+  it('can be imported', async () => {
+    const mod = await import('#/views/sys/user/recycle.vue');
+    expect(mod).toBeDefined();
+  }, 30000);
 });
