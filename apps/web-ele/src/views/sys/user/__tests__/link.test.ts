@@ -1,54 +1,38 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createPinia, setActivePinia } from 'pinia';
 
-// Mock the API modules
-vi.mock('#/api/sys/user', () => ({
-  linkUserAndRole: vi.fn().mockResolvedValue({ code: 0 }),
-  queryRolesByUserId: vi.fn().mockResolvedValue([
-    { roleId: '1', roleName: 'Admin' },
-    { roleId: '2', roleName: 'User' },
-  ]),
+vi.mock('@vben/common-ui', () => ({
+  useVbenModal: vi.fn().mockReturnValue([{}, {}]),
+}));
+
+vi.mock('@vben/locales', () => ({
+  $t: vi.fn((key: string) => key),
+}));
+
+vi.mock('element-plus', () => ({
+  ElMessage: { success: vi.fn(), error: vi.fn() },
+}));
+
+vi.mock('#/adapter/form', () => ({
+  useVbenForm: vi.fn().mockReturnValue([{}, {}]),
 }));
 
 vi.mock('#/api/sys/role', () => ({
-  getAllRole: vi.fn().mockResolvedValue([
-    { id: '1', roleName: 'Admin' },
-    { id: '2', roleName: 'User' },
-    { id: '3', roleName: 'Guest' },
-  ]),
+  getAllRole: vi.fn().mockResolvedValue([]),
 }));
 
-describe('SysUser Link View (User-Role Linking)', () => {
-  it('has correct form schema for role assignment', () => {
-    const schema = [
-      {
-        component: 'ApiSelect',
-        fieldName: 'roleIds',
-        label: 'system.role.roleId',
-      },
-    ];
+vi.mock('#/api/sys/user', () => ({
+  linkUserAndRole: vi.fn().mockResolvedValue({}),
+  queryRolesByUserId: vi.fn().mockResolvedValue([]),
+}));
 
-    expect(schema).toHaveLength(1);
-    expect(schema[0].fieldName).toBe('roleIds');
+describe('UserLink', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
   });
 
-  it('processes selected role IDs correctly', () => {
-    const roleResponse = [
-      { roleId: '1', roleName: 'Admin' },
-      { roleId: '2', roleName: 'User' },
-    ];
-
-    const selectedIds = roleResponse.map((item) => item.roleId);
-    expect(selectedIds).toEqual(['1', '2']);
-  });
-
-  it('handles role list from API', () => {
-    const allRoles = [
-      { id: '1', roleName: 'Admin' },
-      { id: '2', roleName: 'User' },
-      { id: '3', roleName: 'Guest' },
-    ];
-
-    expect(allRoles).toHaveLength(3);
-    expect(allRoles[0].roleName).toBe('Admin');
-  });
+  it('can be imported', async () => {
+    const mod = await import('#/views/sys/user/link.vue');
+    expect(mod).toBeDefined();
+  }, 30000);
 });

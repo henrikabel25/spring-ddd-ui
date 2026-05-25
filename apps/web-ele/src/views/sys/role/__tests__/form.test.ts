@@ -1,72 +1,34 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createPinia, setActivePinia } from 'pinia';
 
-// Mock the API modules
+vi.mock('@vben/common-ui', () => ({
+  useVbenModal: vi.fn().mockReturnValue([{}, {}]),
+}));
+
+vi.mock('@vben/locales', () => ({
+  $t: vi.fn((key: string) => key),
+}));
+
+vi.mock('element-plus', () => ({
+  ElMessage: { success: vi.fn(), error: vi.fn() },
+}));
+
+vi.mock('#/adapter/form', () => ({
+  useVbenForm: vi.fn().mockReturnValue([{}, {}]),
+}));
+
 vi.mock('#/api/sys/role', () => ({
-  createRole: vi.fn().mockResolvedValue({ code: 0 }),
-  updateRole: vi.fn().mockResolvedValue({ code: 0 }),
+  createRole: vi.fn().mockResolvedValue({}),
+  updateRole: vi.fn().mockResolvedValue({}),
 }));
 
-vi.mock('#/api/sys/dept', () => ({
-  getTree: vi.fn().mockResolvedValue({ data: [] }),
-}));
-
-describe('SysRole Form View', () => {
-  it('has correct form schema for role creation', () => {
-    const schema = [
-      {
-        component: 'Input',
-        fieldName: 'roleName',
-        label: 'system.role.label',
-        rules: 'required',
-      },
-      {
-        component: 'Input',
-        fieldName: 'roleCode',
-        label: 'system.role.code',
-        rules: 'required',
-      },
-      {
-        component: 'Input',
-        fieldName: 'roleDesc',
-        label: 'system.role.desc',
-        rules: 'required',
-      },
-      {
-        component: 'Select',
-        fieldName: 'dimensions',
-        label: '权限维度',
-      },
-      {
-        component: 'Switch',
-        fieldName: 'ownerStatus',
-        label: 'system.role.owner',
-      },
-      {
-        component: 'Switch',
-        fieldName: 'roleStatus',
-        label: 'system.role.status',
-      },
-    ];
-
-    expect(schema).toHaveLength(6);
-    expect(schema[0].fieldName).toBe('roleName');
-    expect(schema[0].rules).toBe('required');
-    expect(schema[1].fieldName).toBe('roleCode');
+describe('RoleForm', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
   });
 
-  it('validates required fields', () => {
-    const requiredFields = ['roleName', 'roleCode', 'roleDesc', 'ownerStatus'];
-
-    requiredFields.forEach((field) => {
-      expect(field).toBeTruthy();
-    });
-  });
-
-  it('handles dimension selection correctly', () => {
-    const dimensions = ['dept', 'post', 'user', 'self'];
-    const selectedDimensions = ['dept', 'post'];
-
-    expect(dimensions).toContain('dept');
-    expect(selectedDimensions).toHaveLength(2);
-  });
+  it('can be imported', async () => {
+    const mod = await import('#/views/sys/role/form.vue');
+    expect(mod).toBeDefined();
+  }, 30000);
 });
