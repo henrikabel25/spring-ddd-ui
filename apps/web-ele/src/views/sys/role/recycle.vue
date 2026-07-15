@@ -26,7 +26,6 @@ interface RowType {
   roleName: string;
   roleCode: string;
   roleDesc: string;
-  dataScope: number;
   roleStatus: boolean;
   ownerStatus: boolean;
 }
@@ -41,7 +40,6 @@ const gridOptions: VxeGridProps<RowType> = {
     },
     { field: 'roleCode', title: $t('system.role.code') },
     { field: 'roleDesc', title: $t('system.role.desc') },
-    { field: 'dataScope', title: $t('system.role.scope') },
     {
       field: 'ownerStatus',
       title: $t('system.role.owner'),

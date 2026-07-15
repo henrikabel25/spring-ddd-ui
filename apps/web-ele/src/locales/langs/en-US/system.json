@@ -47,7 +47,6 @@
     "label": "Role Name",
     "code": "Role Code",
     "desc": "Role Description",
-    "scope": "Data Scope",
     "owner": "Is Owner",
     "status": "Status",
     "permissions": "Permissions"

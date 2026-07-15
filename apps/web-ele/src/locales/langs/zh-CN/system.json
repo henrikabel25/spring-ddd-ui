@@ -47,7 +47,6 @@
     "label": "角色名称",
     "code": "角色编码",
     "desc": "角色描述",
-    "scope": "数据范围",
     "owner": "是否拥有者",
     "status": "状态",
     "permissions": "权限"
