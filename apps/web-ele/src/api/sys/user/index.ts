@@ -4,6 +4,10 @@ export async function getUserPage(data: any) {
   return requestClient.post('/sys/user/index', data);
 }
 
+export async function getUserList(data?: any) {
+  return requestClient.post('/sys/user/list', data ?? {});
+}
+
 export async function getRecyclePage(data: any) {
   return requestClient.post('/sys/user/recycle', data);
 }

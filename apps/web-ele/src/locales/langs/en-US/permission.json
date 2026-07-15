@@ -1,0 +1,38 @@
+{
+  "title": "Permission Management",
+  "rowPermission": {
+    "title": "Row-level Permission",
+    "name": "Row-level Permission",
+    "filterConditions": "Filter Conditions",
+    "rules": "Row Permission Rules",
+    "role": "Role",
+    "menu": "Menu",
+    "scopeType": "Scope Type",
+    "target": "Target",
+    "targetDept": "Target Department",
+    "targetPost": "Target Post",
+    "targetUser": "Target User",
+    "addRule": "Add Rule",
+    "save": "Save",
+    "hint": "Select Role + Menu to load existing rules. Save overwrites all rules for the selected Role + Menu.",
+    "placeholder": {
+      "role": "Please select a role",
+      "menu": "Please select a menu"
+    },
+    "validation": {
+      "targetRequired": "Please select at least one target"
+    },
+    "scope": {
+      "all": "All",
+      "dept": "Department",
+      "deptAndChild": "Department and Children",
+      "post": "Post",
+      "user": "User"
+    }
+  },
+  "columnPermission": {
+    "title": "Column-level Permission",
+    "name": "Column-level Permission",
+    "comingSoon": "Column-level permission is under development."
+  }
+}

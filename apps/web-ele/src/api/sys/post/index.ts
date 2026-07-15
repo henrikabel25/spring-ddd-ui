@@ -12,6 +12,10 @@ export async function getTree(data: any) {
   return requestClient.post('/sys/post/tree', data);
 }
 
+export async function getPostList(data?: any) {
+  return requestClient.post('/sys/post/list', data ?? {});
+}
+
 export async function createPost(data: any) {
   return requestClient.post('/sys/post/create', data);
 }

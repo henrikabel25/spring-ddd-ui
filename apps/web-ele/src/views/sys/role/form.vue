@@ -46,40 +46,6 @@ const [Form, formApi] = useVbenForm({
       rules: 'required',
     },
     {
-      component: 'Select',
-      componentProps: {
-        allowClear: true,
-        filterOption: true,
-        options: [
-          {
-            label: 'All',
-            value: 0,
-          },
-          {
-            label: 'Department Only',
-            value: 1,
-          },
-          {
-            label: 'Department and Children',
-            value: 2,
-          },
-          {
-            label: 'Personal',
-            value: 3,
-          },
-          {
-            label: 'Post',
-            value: 4,
-          },
-        ],
-        showSearch: true,
-      },
-      fieldName: 'dataScope',
-      defaultValue: 0,
-      label: $t('system.role.scope'),
-      rules: 'required',
-    },
-    {
       component: 'Switch',
       componentProps: {
         class: 'w-auto',

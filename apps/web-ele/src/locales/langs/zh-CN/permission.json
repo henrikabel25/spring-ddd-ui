@@ -1,0 +1,38 @@
+{
+  "title": "权限管理",
+  "rowPermission": {
+    "title": "行级权限",
+    "name": "行级权限",
+    "filterConditions": "筛选条件",
+    "rules": "行级权限规则",
+    "role": "角色",
+    "menu": "菜单",
+    "scopeType": "范围类型",
+    "target": "目标",
+    "targetDept": "目标部门",
+    "targetPost": "目标岗位",
+    "targetUser": "目标用户",
+    "addRule": "添加规则",
+    "save": "保存",
+    "hint": "选择角色和菜单以加载已有规则。保存将覆盖当前角色和菜单下的所有规则。",
+    "placeholder": {
+      "role": "请选择角色",
+      "menu": "请选择菜单"
+    },
+    "validation": {
+      "targetRequired": "请至少选择一个目标"
+    },
+    "scope": {
+      "all": "全部",
+      "dept": "本部门",
+      "deptAndChild": "本部门及以下",
+      "post": "岗位",
+      "user": "用户"
+    }
+  },
+  "columnPermission": {
+    "title": "列级权限",
+    "name": "列级权限",
+    "comingSoon": "列级权限功能开发中。"
+  }
+}
