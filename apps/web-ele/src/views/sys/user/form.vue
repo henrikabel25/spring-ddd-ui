@@ -142,24 +142,33 @@ const [Form, formApi] = useVbenForm({
 const [Modal, modalApi] = useVbenModal({
   onConfirm: () => {
     formApi.validate().then(async (e) => {
-      if (e.valid) {
+      if (!e.valid) {
+        ElMessage.error($t('system.common.validation.error'));
+        await modalApi.setState({ loading: false });
+        return;
+      }
+      try {
         const values = await formApi.getValues();
         const postIds = values.postIds || [];
         const userData = { ...values };
         delete userData.postIds;
 
-        const userId = userData.id
-          ? await updateUser(userData).then(() => userData.id)
+        const userId = writeForm.value?.id
+          ? await updateUser({ ...userData, id: writeForm.value.id }).then(
+              () => writeForm.value.id,
+            )
           : await createUser(userData);
 
         await batchSaveUserPost({ userId, postIds });
 
         ElMessage.success($t('system.common.save.success'));
         props.gridApi.reload();
-      } else {
-        ElMessage.error($t('system.common.validation.error'));
+        await modalApi.close();
+      } catch (error: any) {
+        ElMessage.error(error?.message || $t('system.common.save.error'));
+      } finally {
+        await modalApi.setState({ loading: false });
       }
-      await modalApi.setState({ loading: false }).close();
     });
   },
   confirmText: $t('system.common.button.confirm'),
